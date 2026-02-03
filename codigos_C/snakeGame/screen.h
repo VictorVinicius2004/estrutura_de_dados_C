@@ -35,7 +35,7 @@ void newApple(Snake* snake, ScreenPosition* apple){
 }
 
 void printScreen(Snake* snake, ScreenPosition apple, GameState gameStage){
-  const char* boardColor = (gameStage==IN_GAME)? "" :
+  const char* boardColor = (gameStage==IN_GAME)? CPURPLE :
   (gameStage==GAME_OVER)? CRED : CGREEN;
 
   for(int i=-1; i<=LINES; i++){
@@ -55,7 +55,7 @@ void printScreen(Snake* snake, ScreenPosition apple, GameState gameStage){
           switch(snakeInPosition(i,j,snake)){
             case HEAD: printf("@%s",END_COLOR); break;
             case TAIL: printf("O%s",END_COLOR); break;
-            case NONE: printf("%s.",END_COLOR);
+            case NONE: printf("%s#",END_COLOR);
           }
         }
       }

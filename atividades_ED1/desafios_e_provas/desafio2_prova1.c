@@ -34,10 +34,11 @@ int main(){
 	for(int i=0; i<n; i++){
 		int cont=0;
 
-		for(int j=0; j<n; j++)
-			if(vetor[j]>=vetor[i])
-				cont++;
-		
+		for(int j=0; j<n; j++){
+      if(vetor[j]>=vetor[i]){
+        cont++;
+      }
+    }
 		if(cont>=vetor[i] && vetor[i]>hindex)
 			hindex=vetor[i];
 	}

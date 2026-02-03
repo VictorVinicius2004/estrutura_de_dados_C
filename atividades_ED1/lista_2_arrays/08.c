@@ -13,6 +13,7 @@ que o array esteja vazio novamente. Imprima o conteúdo da “memória cache” 
 int main(){
 	srand(time(NULL));
 	int n, x, y;
+  printf("Excluir o processo menos recentemente usado\n");
 	printf("Digite o valor de n.\n");
 	scanf(" %d", &n);
 	printf("Digite o min e o max.\n");
@@ -22,21 +23,55 @@ int main(){
 	for (int i = 0; i < n; i++)
 		array[i]=rand()%(y-x+1)+x;
 		
-	for (int i = y+1; i >=x ; i--){
-		int removido=0;
-		for(int j=0; j<n; j++)
-			if(array[j]==i){
-				array[j]=y+1;
-				removido=1;
-			}
-		
-		for(int j=0; j<n; j++)
-			if((array[j]<=y && removido) || i==y+1)
-				printf("%02d ", array[j]);
-		if(removido || i==y+1)
-		printf("\n");
-	}
-	printf("Programa finalizado.");
+  int EXCLUIDO=x-1;
+  int qntdExcluidos=0;
+  do{
+    //print dos elementos
+    for(int j=0; j<n; j++){
+      if(array[j]!=EXCLUIDO)
+        printf("[%d] ",array[j]);
+    }printf("\n");
+
+    //verifica o menos recentemente acessado para excluir
+    int ultimo;
+    for(int i=0; i<n; i++){
+      //pule espaços excluídos
+      if(array[i]==EXCLUIDO) continue;
+
+      if(i==0){//se for a primeira repetição
+        ultimo=i;
+      }
+      else{
+        //verifica se o número atual foi acessado mais recentemente(no início do vetor)
+        int maisRecente=0;
+        for(int j=0; j<ultimo; j++){
+          if(array[j]==array[i]){
+            maisRecente=1;
+            break;
+          }
+        }
+
+        //se o número atual não for diferente do último e nem foi acessado mais ao inicio do vetor
+        //ele é o menos recentemente acessado
+        if(array[i]!=array[ultimo] && !maisRecente){
+          ultimo = i;
+        }
+      }
+    }
+
+
+    //exclui o menos recentemente acessado
+    int aExcluir=array[ultimo];
+    for(int i=0; i<n; i++)
+      if(array[i]==aExcluir){
+        array[i]=EXCLUIDO;
+        qntdExcluidos++;
+      }
+
+    //se excluiu tudo termina o código
+    if(qntdExcluidos==n)
+      break;
+  }while(1);
 	return 0;
 }
 

@@ -6,6 +6,7 @@
 
 #define CRED "\033[31m"
 #define CGREEN "\033[32m"
+#define CPURPLE "\033[35m"
 #define END_COLOR "\033[0m"
 
 typedef enum{

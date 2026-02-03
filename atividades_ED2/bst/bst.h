@@ -5,6 +5,13 @@
 #include <stdlib.h>
 #include "object.h"
 
+typedef enum
+{
+  ROOT,
+  LEFT,
+  RIGHT
+}Side;
+
 typedef struct{
   Object raiz;
   void (*insert)();
@@ -44,24 +51,26 @@ Object search(BSTree abb, int key, TypeObject type){
   return _search(abb->raiz,key,type);
 }
 
-void printTab(int tabs){
-  for(int i=0; i<tabs; i++) printf("\t");
+void printProfundidade(int tabs){
+  for(int i=0; i<tabs; i++) printf("    ");
 }
 
-void _printTree(Object raiz, int profundidade){
+void _printTree(Object raiz, int profundidade, Side side){
   if(!raiz) return;
-  _printTree(raiz->right, profundidade+1);
-  printTab(profundidade);
-  printf("%d",raiz->chave);
-  if(!raiz->left && raiz->right) printf("↑\n");
-  else if(!raiz->right && raiz->left) printf("↓\n");
-  else if(raiz->left && raiz->right) printf("↕\n");
-  else printf("/\n");
-  _printTree(raiz->left, profundidade+1);
+  printProfundidade(profundidade);
+  if(side==LEFT)
+    printf("(L)");
+  else if(side==RIGHT)
+    printf("(R)");
+  else
+    printf("(ROOT)");
+  printf("%d\n",raiz->chave);
+  _printTree(raiz->right, profundidade+1,RIGHT);
+  _printTree(raiz->left, profundidade+1,LEFT);
 }
 
 void printTree(BSTree abb){
-  _printTree(abb->raiz,0);
+  _printTree(abb->raiz,0,ROOT);
 }
 
 Object _remove_no(Object raiz, int key,TypeObject type){

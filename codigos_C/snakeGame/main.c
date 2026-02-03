@@ -9,19 +9,19 @@
 #define DELAY 200
 
 #ifdef _WIN32
-#include <windows.h>
-#define CLEAR "cls"
-void wait_ms(long milliseconds){
-	Sleep(milliseconds)
-}
+  #include <windows.h>
+  #define clear "cls"
+    void wait_ms(long milliseconds){
+      sleep(milliseconds)
+    }
 #else
-#define CLEAR "clear"
-void wait_ms(long milliseconds){
-	struct timespec req;
-	req.tv_sec = milliseconds/1000;
-	req.tv_nsec = (milliseconds%1000)*1000000L;
-	nanosleep(&req,NULL);
-}
+  #define CLEAR "clear"
+  void wait_ms(long milliseconds){
+    struct timespec req;
+    req.tv_sec = milliseconds/1000;
+    req.tv_nsec = (milliseconds%1000)*1000000L;
+    nanosleep(&req,NULL);
+  }
 #endif
 
 void gameOver(Snake* snake,ScreenPosition apple){
@@ -51,6 +51,34 @@ void startMenu(int* delay){
   getchar();
 }
 
+void receive_movement(char movement, Snake* snake){
+      switch(movement){
+        case 'w':
+        case 'W':
+          if(snake->head->direction!=DOWN) moveSnake(snake,UP);
+          else moveSnake(snake,NO_DIRECTION);
+          break;
+        case 'A':
+        case 'a':
+          if(snake->head->direction!=RIGHT) moveSnake(snake,LEFT);
+          else moveSnake(snake,NO_DIRECTION);
+          break;
+        case 's':
+        case 'S':
+          if(snake->head->direction!=UP) moveSnake(snake,DOWN);
+          else moveSnake(snake,NO_DIRECTION);
+          break;
+        case 'd':
+        case 'D':
+          if(snake->head->direction!=LEFT) moveSnake(snake,RIGHT);
+          else moveSnake(snake,NO_DIRECTION);
+          break;
+        case 'q':
+        case 'Q':
+          exit(0);
+      }
+}
+
 int main(){
   srand(time(NULL));
   Snake* snake = initSnake();
@@ -64,31 +92,7 @@ int main(){
     system(CLEAR);
     printScreen(snake,apple,IN_GAME);
     if(kbhit(&movement)){
-      switch(movement){
-        case 'w':
-        case 'W':
-          if(snake->head->direction!=DOWN) moveSnake(snake,UP);
-          else moveSnake(snake,NO_DIRECTION);
-          break;
-        case 'A':
-        case 'a':
-          if(snake->head->direction!=RIGHT)moveSnake(snake,LEFT);
-          else moveSnake(snake,NO_DIRECTION);
-          break;
-        case 's':
-        case 'S':
-          if(snake->head->direction!=UP)moveSnake(snake,DOWN);
-          else moveSnake(snake,NO_DIRECTION);
-          break;
-        case 'd':
-        case 'D':
-          if(snake->head->direction!=LEFT)moveSnake(snake,RIGHT);
-          else moveSnake(snake,NO_DIRECTION);
-          break;
-        case 'q':
-        case 'Q':
-          return 0;
-      }
+      receive_movement(movement,snake);
     }
     else
       moveSnake(snake,NO_DIRECTION);

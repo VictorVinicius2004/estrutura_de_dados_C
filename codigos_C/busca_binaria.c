@@ -57,7 +57,7 @@ int main(){
 		}
 	}
 	
-	encontrado? printf("%d encontrado na posição %d", num, meio) : 
+	encontrado? printf("\n%d encontrado na posição %d", num, meio) : 
 	printf("%d não pertence ao vetor", num);
 	return 0;
 }
